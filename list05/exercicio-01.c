@@ -4,37 +4,46 @@
 int* createVector(int size);
 void printVector(int* vector, int size);
 void readVector(int* vector, int size);
-int* resizeVector(int* vector, int newSize);
+int* resizeVector(int* vector, int originalSize, int newSize);
 void freeVector(int* vector);
 
 int main() {
-    printf("Bem-vindo ao programa de manipulacao de vetores dinâmicos!\n"
-           "Este programa executa as seguintes operacoes:\n"
-           "  1. Cria dinamicamente um vetor de inteiros com todas as posicoes inicializadas em 0.\n"
-           "  2. Realiza a leitura dos valores do vetor a partir da entrada do usuario.\n"
-           "  3. Imprime os valores armazenados no vetor.\n"
-           "  4. Permite o redimensionamento do vetor para um novo tamanho, transferindo os elementos existentes; "
-           "caso o novo tamanho seja menor, os elementos excedentes serao descartados.\n"
-           "  5. Libera a memoria alocada para o vetor quando ela nao for mais necessaria.\n\n");
+    printf("Welcome to the dynamic vector manipulation program!\n"
+           "This program performs the following operations:\n"
+           "  1. Dynamically creates an integer vector with all elements initialized to 0.\n"
+           "  2. Reads values into the vector from user input.\n"
+           "  3. Prints the values stored in the vector.\n"
+           "  4. Resizes the vector to a new size, preserving existing elements where possible;\n"
+           "     if the new size is smaller, excess elements are discarded.\n"
+           "  5. Frees the memory allocated for the vector when it's no longer needed.\n\n");
 
     int size = 0;
-    printf("Write the size of the vector: ");
+    printf("Enter the initial size of the vector: ");
     scanf("%d", &size);
 
-    int *vector = NULL;
+    int* vector = NULL;
     vector = createVector(size);
+    if (vector == NULL) {
+        return 1;
+    }
 
     printVector(vector, size);
     readVector(vector, size);
     printVector(vector, size);
 
     int newSize = 0;
-    printf("Write the new size of the vector: ");
+    printf("Enter the new size of the vector: ");
     scanf("%d", &newSize);
 
     int* newVector = NULL;
-    newVector = resizeVector(vector, newSize);
-    printVector(newVector, newSize);
+    newVector = resizeVector(vector, size, newSize);
+    if (newVector == NULL) {
+        freeVector(vector);
+        return 1;
+    }
+
+    size = newSize;
+    printVector(newVector, size);
 
     freeVector(newVector);
 
@@ -42,8 +51,12 @@ int main() {
 }
 
 int* createVector(int size) {
-    int* vector = NULL;
-    vector = malloc(sizeof(vector) * size);
+    int* vector = malloc(sizeof(int) * size);
+    if (vector == NULL) {
+        printf("Memory allocation failed.\n");
+        return NULL;
+    }
+
     for (int i = 0; i < size; i++) {
         vector[i] = 0;
     }
@@ -52,24 +65,35 @@ int* createVector(int size) {
 }
 
 void printVector(int* vector, int size) {
+    printf("Current vector content:\n");
     for (int i = 0; i < size; i++) {
-        printf("vector [%d] = %d\n", i, vector[i]);
+        printf("vector[%d] = %d\n", i, vector[i]);
     }      
 }
 
 void readVector(int* vector, int size) {
-    printf("Write new values to the vector:");
+    printf("Enter new values for the vector:\n");
     for (int i = 0; i < size; i++) {
+        printf("vector[%d] = ", i);
         scanf("%d", &vector[i]);
     }
 }
 
-int* resizeVector(int* vector, int newSize) {
-    int* newVector = NULL;
-    newVector = malloc(sizeof(newVector) * newSize);
+int* resizeVector(int* vector, int originalSize, int newSize) {
+    int* newVector = malloc(sizeof(int) * newSize);
+    if (newVector == NULL) {
+        printf("Memory allocation failed during resizing.\n");
+        return NULL;
+    }
 
-    for (int i = 0; i < newSize; i++) {
+    int minSize = (originalSize < newSize) ? originalSize : newSize;
+
+    for (int i = 0; i < minSize; i++) {
         newVector[i] = vector[i];
+    }
+
+    for (int i = minSize; i < newSize; i++) {
+        newVector[i] = 0;
     }
 
     freeVector(vector);
@@ -77,5 +101,5 @@ int* resizeVector(int* vector, int newSize) {
 }
 
 void freeVector(int* vector) {
-   free(vector);
+    free(vector);
 }
