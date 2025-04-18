@@ -27,10 +27,12 @@ int main() {
 }
 
 int findLowest(int* vector, int n) {
-    int index = INT_MAX;
+    int index = 0;
+    int value = INT_MAX;
     for (int i = 0; i < n; i++) {
-        if (vector[i] < index) {
+        if (vector[i] < value) {
             index = i;
+            value = vector[i];
         }
     }
     return index;
