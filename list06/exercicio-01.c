@@ -22,13 +22,25 @@ int** createMatrix(int numRows, int numCols) {
 }
 
 void readMatrix(int** matrix, int numRows, int numCols) {
-
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
 }
 
 void printMatrix(int** matrix, int numRows, int numCols) {
-
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 void freeMatrix(int** matrix, int numRows) {
-
+    for (int i = 0; i < numRows; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
 }
