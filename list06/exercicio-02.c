@@ -52,6 +52,7 @@ int main() {
         return 1;
     }
 
+    printf("Result of matrix sum:\n");
     printMatrix(sumMatrix, numRowsFirst, numColsFirst);
 
     freeMatrix(firstMatrix, numRowsFirst);
