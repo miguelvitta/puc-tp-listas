@@ -30,11 +30,11 @@ int main() {
     readMatrix(firstMatrix, numRowsFirst, numColsFirst);
 
     int numRowsSecond = 0;
-    printf("Enter number of rows for the first matrix:\n");
+    printf("Enter number of rows for the second matrix:\n");
     scanf("%d", &numRowsSecond);
 
     int numColsSecond = 0;
-    printf("Enter number of columns  for the first matrix:\n");
+    printf("Enter number of columns  for the second matrix:\n");
     scanf("%d", &numColsSecond);
 
     float** secondMatrix = NULL;
