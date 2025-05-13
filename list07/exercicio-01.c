@@ -69,64 +69,52 @@ int main() {
     printf("y = ");
     printComplexNumber(y);
 
-    complexNumber* sum = NULL;
-    sum = addComplexNumber(x, y);
-    printf("The sum of X and Y is: ");
+    complexNumber* sum = addComplexNumber(x, y);
+    printf("X + Y = ");
     printComplexNumber(sum);
 
-    complexNumber* subtraction = NULL;
-    subtraction = subtractComplexNumber(x, y);
-    printf("The subtraction of X and Y is: ");
+    complexNumber* subtraction = subtractComplexNumber(x, y);
+    printf("X - Y = ");
     printComplexNumber(subtraction);
 
-    complexNumber* multiplication = NULL;
-    multiplication = multiplyComplexNumber(x, y);
-    printf("The multiplication of X and Y is: ");
+    complexNumber* multiplication = multiplyComplexNumber(x, y);
+    printf("X * Y = ");
     printComplexNumber(multiplication);
 
-    complexNumber* division = NULL;
-    division = divideComplexNumber(x, y);
-    printf("The division of X and Y is: ");
+    complexNumber* division = divideComplexNumber(x, y);
+    printf("X / Y = ");
     printComplexNumber(division);
 
-    complexNumber* sumXA = NULL;
-    sumXA = addComplexReal(x, a);
-    printf("The sum of X and A is: ");
+    complexNumber* sumXA = addComplexReal(x, a);
+    printf("X + A = ");
     printComplexNumber(sumXA);
 
-    complexNumber* subtractionXA = NULL;
-    subtractionXA = subtractComplexReal(x, a);
-    printf("The subtraction of X and A is: ");
+    complexNumber* subtractionXA = subtractComplexReal(x, a);
+    printf("X - A = ");
     printComplexNumber(subtractionXA);
 
-    complexNumber* multiplyXA = NULL;
-    multiplyXA = multiplyComplexReal(x, a);
-    printf("The multiplication of X and A is: ");
+    complexNumber* multiplyXA = multiplyComplexReal(x, a);
+    printf("X * A = ");
     printComplexNumber(multiplyXA);
 
-    complexNumber* divisionXA = NULL;
-    divisionXA = divideComplexReal(x, a);
-    printf("The division of X and A is: ");
+    complexNumber* divisionXA = divideComplexReal(x, a);
+    printf("X / A = ");
     printComplexNumber(divisionXA);
 
-    complexNumber* sumAY = NULL;
-    sumAY = addRealComplex(a, y);
-    printf("The sum of A and Y is: ");
+    complexNumber* sumAY = addRealComplex(a, y);
+    printf("A + Y = ");
     printComplexNumber(sumAY);
 
-    complexNumber* subtractionAY = NULL;
-    subtractionAY = subtractRealComplex(a, y);
-    printf("The subtraction of A and Y is: ");
+    complexNumber* subtractionAY = subtractRealComplex(a, y);
+    printf("A - Y = ");
     printComplexNumber(subtractionAY);
 
-    complexNumber* multiplyAY = NULL;
-    multiplyAY = multiplyRealComplex(a, y);
-    printf("The multiplication of A and Y is: ");
+    complexNumber* multiplyAY = multiplyRealComplex(a, y);
+    printf("A * Y = ");
     printComplexNumber(multiplyAY);
 
-    complexNumber* divisionAY = NULL;
-    divisionAY = divideRealComplex(a, y);
-    printf("The division of A and Y is: ");
+    complexNumber* divisionAY = divideRealComplex(a, y);
+    printf("A / Y = ");
     printComplexNumber(divisionAY);
 
     free(x);
@@ -155,13 +143,22 @@ complexNumber* createComplexNumber(double real, double imaginary) {
 }
 
 void printComplexNumber(complexNumber* number) {
+    if (number == NULL) {
+        printf("Undefined (possible division by zero)\n");
+        return;
+    }
+
     if (number->imaginary == 0) {
         printf("%.2lf\n", number->real);
     } else {
         if (number->real == 0) {
-            printf("%.2lf\n", number->imaginary);
+            printf("%.2lfi\n", number->imaginary);
         } else {
-            printf("%.2lf + %.2lfi\n", number->real, number->imaginary);
+            if (number->imaginary < 0) {
+                printf("%.2lf - %.2lfi\n", number->real, -number->imaginary);
+            } else {
+                printf("%.2lf + %.2lfi\n", number->real, number->imaginary);
+            }
         }
     }
 }
@@ -175,19 +172,30 @@ complexNumber* subtractComplexNumber(complexNumber* x, complexNumber* y) {
 }
 
 complexNumber* multiplyComplexNumber(complexNumber* x, complexNumber* y) {
-    return createComplexNumber(x->real * y->real, x->imaginary * y->imaginary);
+    double real = x->real * y->real - x->imaginary * y->imaginary;
+    double imaginary = x->real * y->imaginary + x->imaginary * y->real;
+    return createComplexNumber(real, imaginary);
 }
 
 complexNumber* divideComplexNumber(complexNumber* x, complexNumber* y) {
-    return createComplexNumber(x->real / y->real, x->imaginary / y->imaginary);
+    double denominator = y->real * y->real + y->imaginary * y->imaginary;
+    if (denominator == 0) {
+        return NULL;
+    }
+
+    double real =
+        (x->real * y->real + x->imaginary * y->imaginary) / denominator;
+    double imaginary =
+        (x->imaginary * y->real - x->real * y->imaginary) / denominator;
+    return createComplexNumber(real, imaginary);
 }
 
 complexNumber* addComplexReal(complexNumber* x, double a) {
-    return createComplexNumber(x->real + a, x->imaginary + a);
+    return createComplexNumber(x->real + a, x->imaginary);
 }
 
 complexNumber* subtractComplexReal(complexNumber* x, double a) {
-    return createComplexNumber(x->real - a, x->imaginary - a);
+    return createComplexNumber(x->real - a, x->imaginary);
 }
 
 complexNumber* multiplyComplexReal(complexNumber* x, double a) {
@@ -195,15 +203,18 @@ complexNumber* multiplyComplexReal(complexNumber* x, double a) {
 }
 
 complexNumber* divideComplexReal(complexNumber* x, double a) {
+    if (a == 0) {
+        return NULL;
+    }
     return createComplexNumber(x->real / a, x->imaginary / a);
 }
 
 complexNumber* addRealComplex(double a, complexNumber* y) {
-    return createComplexNumber(a + y->real, a + y->imaginary);
+    return createComplexNumber(a + y->real, y->imaginary);
 }
 
 complexNumber* subtractRealComplex(double a, complexNumber* y) {
-    return createComplexNumber(a - y->real, a - y->imaginary);
+    return createComplexNumber(a - y->real, -y->imaginary);
 }
 
 complexNumber* multiplyRealComplex(double a, complexNumber* y) {
@@ -211,5 +222,12 @@ complexNumber* multiplyRealComplex(double a, complexNumber* y) {
 }
 
 complexNumber* divideRealComplex(double a, complexNumber* y) {
-    return createComplexNumber(a / y->real, a / y->imaginary);
+    double denom = y->real * y->real + y->imaginary * y->imaginary;
+    if (denom == 0) {
+        return NULL;
+    }
+
+    double real = (a * y->real) / denom;
+    double imaginary = (-a * y->imaginary) / denom;
+    return createComplexNumber(real, imaginary);
 }
