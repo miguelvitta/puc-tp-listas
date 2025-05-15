@@ -136,7 +136,7 @@ int main() {
 }
 
 complexNumber* createComplexNumber(double real, double imaginary) {
-    complexNumber* number = (complexNumber*)malloc(sizeof(complexNumber));
+    complexNumber* number = malloc(sizeof(complexNumber));
     number->real = real;
     number->imaginary = imaginary;
     return number;
