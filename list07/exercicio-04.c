@@ -53,6 +53,90 @@ int main() {
         "these\n"
         "operations in a loop, until an exit option is selected.\n\n");
 
+    tv* t = NULL;
+    t = malloc(sizeof(tv));
+    if (t == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
+    t->status = 0;
+    t->totalChannels = 5;
+    t->currentChannelNumber = 1;
+    t->canais[0] = (canalTv){1, "Globo"};
+    t->canais[1] = (canalTv){3, "Record"};
+    t->canais[2] = (canalTv){5, "SBT"};
+    t->canais[3] = (canalTv){7, "Rede TV"};
+    t->canais[4] = (canalTv){9, "TV Cultura"};
+
+    int option = 0;
+    int channelInput = 0;
+
+    do {
+        printf("\n====== TV Menu ======\n");
+        printf("1. Turn TV ON/OFF\n");
+        printf("2. Check if TV is ON\n");
+        printf("3. Show current channel number\n");
+        printf("4. Show current channel name\n");
+        printf("5. Next channel\n");
+        printf("6. Previous channel\n");
+        printf("7. Go to a specific channel\n");
+        printf("8. Print TV status\n");
+        printf("0. Exit\n");
+        printf("======================\n");
+        printf("Choose an option: ");
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1:
+                togglePower(t);
+                printf("TV is now %s.\n", isTvOn(t) ? "ON" : "OFF");
+                break;
+            case 2:
+                printf("TV is %s.\n", isTvOn(t) ? "ON" : "OFF");
+                break;
+            case 3:
+                if (isTvOn(t)) {
+                    printf("Current channel number: %d\n",
+                           currentChannelNumber(t));
+                } else {
+                    printf("TV is off.\n");
+                }
+                break;
+            case 4:
+                printf("Current channel name: %s\n", currentChannelName(t));
+                break;
+            case 5:
+                nextChannel(t);
+                printf("Switched to next channel: %d - %s\n",
+                       currentChannelNumber(t), currentChannelName(t));
+                break;
+            case 6:
+                previousChannel(t);
+                printf("Switched to previous channel: %d - %s\n",
+                       currentChannelNumber(t), currentChannelName(t));
+                break;
+            case 7:
+                printf("Enter the channel number to go to: ");
+                scanf("%d", &channelInput);
+                if (goToChannel(t, channelInput) != 0) {
+                    printf("Switched to channel: %d - %s\n",
+                           currentChannelNumber(t), currentChannelName(t));
+                } else {
+                    printf("Channel %d not found. No signal.\n", channelInput);
+                }
+                break;
+            case 8:
+                printTv(t);
+                break;
+            case 0:
+                printf("Exiting TV simulation. Goodbye!\n");
+                break;
+            default:
+                printf("Invalid option. Please try again.\n");
+        }
+    } while (option != 0);
+
+    free(t);
     return 0;
 }
 
