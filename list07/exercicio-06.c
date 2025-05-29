@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Define a small epsilon for floating-point comparisons
+#define EPSILON 1e-4
+
 typedef struct {
     double x;
     double y;
@@ -101,9 +104,9 @@ double calculateBC(triangle* t) {
 }
 
 int determineTriangleType(triangle* t) {
-    if ((t->a.x == t->b.x && t->a.y == t->b.y) ||
-        (t->a.x == t->c.x && t->a.y == t->c.y) ||
-        (t->b.x == t->c.x && t->b.y == t->c.y)) {
+    if ((fabs(t->a.x - t->b.x) < EPSILON && fabs(t->a.y - t->b.y) < EPSILON) ||
+        (fabs(t->a.x - t->c.x) < EPSILON && fabs(t->a.y - t->c.y) < EPSILON) ||
+        (fabs(t->b.x - t->c.x) < EPSILON && fabs(t->b.y - t->c.y) < EPSILON)) {
         return -1;  // check for equal points, not a triangle
     }
     double sideAB = calculateAB(t);
@@ -115,11 +118,11 @@ int determineTriangleType(triangle* t) {
         return -1;  // Not a triangle
     }
     // Equilateral: all sides equal
-    if (sideAB == sideAC && sideAC == sideBC) {
+    if (fabs(sideAB - sideAC) < EPSILON && fabs(sideAC - sideBC) < EPSILON && fabs(sideAB - sideBC) < EPSILON) {
         return 1;
     }
     // Isosceles: any two sides equal
-    if (sideAB == sideAC || sideAB == sideBC || sideAC == sideBC) {
+    if (fabs(sideAB - sideAC) < EPSILON || fabs(sideAB - sideBC) < EPSILON || fabs(sideAC - sideBC) < EPSILON) {
         return 2;
     }
     // Scalene: all sides different
