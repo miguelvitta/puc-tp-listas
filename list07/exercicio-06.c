@@ -46,18 +46,18 @@ int main() {
 
     int result = determineTriangleType(t);
     char type[50];
-    if (result == 1) {
-        strcpy(type, "equilateral");
-    } else {
-        if (result == 2) {
+    switch (result) {
+        case 1:
+            strcpy(type, "equilateral");
+            break;
+        case 2:
             strcpy(type, "isosceles");
-        } else {
-            if (result == 3) {
-                strcpy(type, "scalene");
-            } else {
-                strcpy(type, "invalid. These points don't form a triangle");
-            }
-        }
+            break;
+        case 3:
+            strcpy(type, "scalene");
+            break;
+        default:
+            strcpy(type, "invalid. These points don't form a triangle");
     }
     printf("The triangle is: %s\n", type);
 
