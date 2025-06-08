@@ -8,7 +8,7 @@ int copyFileContents(FILE *source, FILE *destination);
 int main(int argc, char *argv[]) {
     if (argc != 4) {
         fprintf(stderr,
-                "When executing the program, use the format: \"./exercicio 07 "
+                "When executing the program, use the format: \"./exercicio 08 "
                 "\"filename\" (the first file to be copied) \"filename\" (the "
                 "second file to be copied) \"filename\" (the file to be "
                 "created)\n");
