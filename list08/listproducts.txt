@@ -1,0 +1,20 @@
+Laptop,1,1200.50
+Mouse,5,25.99
+Keyboard,2,75.00
+Monitor,1,350.75
+Webcam,3,49.90
+Headphones,4,89.99
+USB Drive 64GB,10,15.00
+External Hard Drive 1TB,1,65.25
+Printer,1,180.00
+HDMI Cable 2m,8,12.50
+Desk Lamp LED,2,30.00
+Office Chair Ergonomic,1,150.00
+Notebook A4,10,5.50
+Pen Set Blue,20,3.75
+Stapler Heavy Duty,1,10.00
+Coffee Mug Large,6,7.00
+Water Bottle Stainless Steel,3,18.99
+Mouse Pad Gaming,5,9.50
+Empty Box,0,1.00
+Free Sample,1,0.00
